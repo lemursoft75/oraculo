@@ -94,8 +94,8 @@ def reproducir_audio_autoplay(ruta):
 fondo_con_base64("static/images/fondo.jpg")
 
 # Título y subtítulo
-st.title("🎮 El Oráculo Tóxico")
-st.subheader("🧙 El Maestro Zervantes te revela tu destino")
+st.markdown("<h1 style='color:white; text-align:center;'>🎮 El Oráculo Tóxico</h1>", unsafe_allow_html=True)
+st.markdown("<h3 style='color:white; text-align:center;'>🧙 El Maestro Zervantes te revela tu destino</h3>", unsafe_allow_html=True)
 st.markdown("<h4 style='text-align: center;'>By Xibalbá Games</h4>", unsafe_allow_html=True)
 
 # Instrucciones
@@ -134,7 +134,7 @@ if st.button("Consultar el destino"):
         st.markdown(f"<h3 style='color:#00ccff'>{mensaje}</h3>", unsafe_allow_html=True)
         st.success("¡Tu deseo será concedido! Escoge bien...")
     else:
-        st.markdown(f"<h3 style='color:#cc0000'>{mensaje}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='color:white'>{mensaje}</h3>", unsafe_allow_html=True)
         reproducir_audio_autoplay("static/audio/risa.mp3")
 
     st.image("static/images/lemur.gif", caption="El universo te responde...", use_container_width=True)
