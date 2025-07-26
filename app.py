@@ -126,17 +126,15 @@ st.markdown("""
 
 # ------------------------ BOTÓN PRINCIPAL ------------------------
 
-    if st.button("Consultar el destino"):
-        reproducir_audio_fondo_autoplay("static/audio/fondo.mp3")  # Solo después de clic
-        mensaje = random.choice(predicciones)
+if st.button("Consultar el destino"):
+    reproducir_audio_fondo_autoplay("static/audio/fondo.mp3")  # Solo después de clic
+    mensaje = random.choice(predicciones)
 
-        if "ESTÁS DE SUERTE" in mensaje.upper():
-            st.markdown(f"<h3 style='color:#00ccff'>{mensaje}</h3>", unsafe_allow_html=True)
-            st.success("¡Tu deseo será concedido! Escoge bien...")
-        else:
-            st.markdown(f"<h3 style='color:#cc0000'>{mensaje}</h3>", unsafe_allow_html=True)
-            reproducir_audio_autoplay("static/audio/risa.mp3")
-            # Al final del código (después del último st.markdown)
-            reproducir_audio_fondo_autoplay("static/audio/fondo.mp3")
+    if "ESTÁS DE SUERTE" in mensaje.upper():
+        st.markdown(f"<h3 style='color:#00ccff'>{mensaje}</h3>", unsafe_allow_html=True)
+        st.success("¡Tu deseo será concedido! Escoge bien...")
+    else:
+        st.markdown(f"<h3 style='color:#cc0000'>{mensaje}</h3>", unsafe_allow_html=True)
+        reproducir_audio_autoplay("static/audio/risa.mp3")
 
-        st.image("static/images/lemur.gif", caption="El universo te responde...", use_container_width=True)
+    st.image("static/images/lemur.gif", caption="El universo te responde...", use_container_width=True)
