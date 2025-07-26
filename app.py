@@ -1,72 +1,142 @@
-# Lista de predicciones humorísticas
 import streamlit as st
 import random
+import base64
 
-# Lista de predicciones
+# ------------------------ CONFIGURACIÓN DE PÁGINA ------------------------
+st.set_page_config(page_title="Oráculo Tóxico", layout="centered")
+
+# ------------------------ PREDICCIONES ------------------------
 predicciones = [
-    "Tu café se derramará justo cuando respondas ese correo importante.",
-    "Hoy alguien confundirá tu esfuerzo con flojera. No será la última vez.",
+    "Hoy como de costumbre la vas a cagar.",
+    "Descubrirás que sirves para algo, para dar cringe.",
     "Otro día solitario, aburrido y espantoso.",
-    "Te llegará una factura que no sabías que existía. Spoiler: es tuya.",
-    "El WiFi funcionará… hasta que tengas tu reunión más importante.",
-    "El pan se te quemará, como tus esperanzas por ese aumento.",
-    "Hoy te confundirán con alguien... que no cae bien.",
-    "La impresora fallará solo cuando estés apurado.",
-    "Hoy alguien te dirá “tenemos que hablar”... y no será por algo bueno.",
-    "Lo estas haciendo horrible, rindete.",
-    "La alarma sonará... 15 minutos después de lo necesario.",
-    "Subirás una historia sin darte cuenta del fondo comprometedor.",
-    "El cajero automático decidirá que hoy no reconocerá tu tarjeta.",
+    "Seguirás echándole ganas...y fallando cada vez más.",
+    "Al mirarte hoy al espejo, te verás más acabado y rancio.",
+    "Pensarás en lo que haz hecho con tu vida, un desperdicio de años.",
+    "Hoy como todos los días serás invisible e innecesario.",
+    "Tendrás otra genial idea que jamás vas a implementar.",
+    "Hoy alguien te dirá -Te amo- y justo cuando le respondas despertarás.",
+    "Lo estás haciendo horrible, ríndete.",
+    "Todo el resto del año vas a seguir siendo inútil.",
+    "Descubrirás que tienes talento para cosas absolutamente innecesarias.",
+    "El cajero automático te mostrará más ceros... a la izquierda.",
     "Tendrás un día normal, es decir muy jodido.",
-    "Hoy el semáforo se coordinará para detenerte en cada esquina.",
-    "Seguiras de esclavo en tu jale culero, no sirves para emprender.",
-    "Hoy te felicitarán por algo que no hiciste. Pero igual tendrás que arreglarlo.",
-    "Alguien dirá “¿No te lo había comentado?”... sobre un cambio crucial.",
-    "Pensarás en la persona equivocada justo cuando digan “habla ahora”.",
-    "Harás una compra innecesaria… y lo sabrás justo después de pagar.",
-    "Tus sospechas seran ciertas, eres un loser.",
-    "Alguien pensará que te puede pagar con “exposición”.",
-    "Tu comida llegará… fría y tarde. Igual te cobrarán doble.",
-    "Hoy la copia de seguridad no se habrá guardado… porque “algo falló”.",
-    "Pensarás que te llaman para agradecerte… y será para pedirte algo.",
-    "Tu crush sabe que le gustas, y siente asco.",
-    "Hoy el clima será contradictorio, como tus decisiones financieras.",
-    "Intentarás descansar… justo cuando comiencen las obras cerca de tu casa.",
-    "Alguien dirá “no fue para tanto”… sobre algo que te costó años.",
-    "Hoy te cruzarás con tu ex… justo después de tropezar."
+    "Vas a ser noticia en tu jale, tus días en la empresa están contados.",
+    "Seguirás de esclavo en tu jale culero, no sirves para emprender.",
+    "Hoy empezarás una nueva vida, con menos porvenir que la anterior.",
+    "Estás a punto de lograrlo, superar tu récord de días seguidos sin lograr nada.",
+    "¡¡ESTÁS DE SUERTE!! pide un deseo y te lo concederé.",
+    "Lo estás haciendo genial, eres el ejemplo perfecto del fracaso.",
+    "Tus sospechas serán ciertas, eres un farsante y te van a descubrir.",
+    "Eso que creías que hacías muy bien en realidad era pura suerte.",
+    "Quédate tranquilo, el Universo no te odia, todo lo malo te pasa por imbécil.",
+    "Estás demasiado joven para quejarte y demasiado viejo para soñar.",
+    "Solo le caes bien a pura gente mierda, y hasta ellos te ignoran.",
+    "Tu crush sabe que la stalkeas, y siente asco.",
+    "Tu máximo logro de hoy será no convertirte en indigente todavía.",
+    "Ponte a jalar en lugar de estar jugando esta madre, por eso no progresas.",
+    "Vas a comprar eso que tanto querías y después te vas a arrepentir.",
+    "Hoy será un día grandioso para todos... excepto para ti."
 ]
 
-# Configuración de página
-st.set_page_config(page_title="Oráculo Tóxico", layout="centered")
+# ------------------------ FUNCIONES DE APOYO ------------------------
+
+# Fondo como imagen base64
+def fondo_con_base64(ruta_imagen):
+    with open(ruta_imagen, "rb") as f:
+        data = base64.b64encode(f.read()).decode()
+    css = f"""
+    <style>
+    [data-testid="stApp"] {{
+        background-image: url("data:image/jpg;base64,{data}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }}
+    </style>
+    """
+    st.markdown(css, unsafe_allow_html=True)
+
+# Música de fondo (loop)
+def reproducir_audio_fondo_autoplay(ruta):
+    try:
+        with open(ruta, "rb") as audio_file:
+            audio_bytes = audio_file.read()
+            audio_base64 = base64.b64encode(audio_bytes).decode()
+            audio_html = f"""
+            <audio autoplay loop>
+                <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3" />
+            </audio>
+            """
+            st.markdown(audio_html, unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.warning("⚠️ No se encontró el archivo de fondo.mp3")
+
+# Risa o efectos puntuales (una sola vez)
+def reproducir_audio_autoplay(ruta):
+    try:
+        with open(ruta, "rb") as audio_file:
+            audio_bytes = audio_file.read()
+            audio_base64 = base64.b64encode(audio_bytes).decode()
+            audio_html = f"""
+            <audio autoplay>
+                <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3" />
+            </audio>
+            """
+            st.markdown(audio_html, unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.warning("⚠️ No se encontró el archivo de efecto.mp3")
+
+# ------------------------ ESTILOS Y ENCABEZADO ------------------------
+
+# Fondo visual
+fondo_con_base64("static/images/fondo.jpg")
+
+# Título y subtítulo
 st.title("🎮 El Oráculo Tóxico")
 st.subheader("🧙 El Maestro Zervantes te revela tu destino")
 st.markdown("<h4 style='text-align: center;'>By Xibalbá Games</h4>", unsafe_allow_html=True)
 
-# Botón rojo con estilo personalizado
-button_style = """
+# Instrucciones
+st.markdown("""
+<div style='background-color:rgba(0,0,0,0.7); padding:1em; border-radius:10px; color:white; font-size:1.1em'>
+<b>Instrucciones:</b><br>
+Si en tu <i>primer intento</i> aparece la predicción <b style='color:#00ccff'>“¡¡ESTÁS DE SUERTE!! pide un deseo y te lo concederé.”</b><br>
+Tu deseo se cumplirá sin consecuencias…<br>
+Pero si fallas, <b>todo lo que el Maestro Zervantes decrete en cada intento será inevitable.</b><br>
+<b>Juega si te atreves.</b>
+</div>
+""", unsafe_allow_html=True)
+
+# Estilo de botón
+st.markdown("""
     <style>
     div.stButton > button:first-child {
         background-color: #990000;
         color: white;
-        border: None;
+        border: none;
         padding: 0.75em 1.5em;
         font-weight: bold;
         font-size: 1em;
         border-radius: 10px;
     }
     </style>
-"""
-st.markdown(button_style, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
-if st.button("Consultar el destino"):
-    mensaje = random.choice(predicciones)
-    st.markdown(f"<h3 style='color:#cc0000'>{mensaje}</h3>", unsafe_allow_html=True)
-    st.image("static/images/lemur.gif", caption="El universo te responde...", use_container_width=True)
+# ------------------------ BOTÓN PRINCIPAL ------------------------
 
-    audio_autoplay = """
-    <audio autoplay>
-        <source src="static/audio/risa.mp3" type="audio/mpeg">
-    </audio>
-    """
-    st.markdown(audio_autoplay, unsafe_allow_html=True)
+    if st.button("Consultar el destino"):
+        reproducir_audio_fondo_autoplay("static/audio/fondo.mp3")  # Solo después de clic
+        mensaje = random.choice(predicciones)
 
+        if "ESTÁS DE SUERTE" in mensaje.upper():
+            st.markdown(f"<h3 style='color:#00ccff'>{mensaje}</h3>", unsafe_allow_html=True)
+            st.success("¡Tu deseo será concedido! Escoge bien...")
+        else:
+            st.markdown(f"<h3 style='color:#cc0000'>{mensaje}</h3>", unsafe_allow_html=True)
+            reproducir_audio_autoplay("static/audio/risa.mp3")
+            # Al final del código (después del último st.markdown)
+            reproducir_audio_fondo_autoplay("static/audio/fondo.mp3")
+
+        st.image("static/images/lemur.gif", caption="El universo te responde...", use_container_width=True)
